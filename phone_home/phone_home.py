@@ -2,7 +2,7 @@ from subprocess import check_output
 from os import system
 from pprint import pprint
 
-from paramiko import *
+#from paramiko import *
 
 
 class Flag:
@@ -12,10 +12,11 @@ class Flag:
         self.line_no = int(line_no)
         self.line_text = line_text
 
-def find_file(fname, loc):
+def find_files(fname, loc):
     cmd = " ".join(['find', loc, ' -name ', '\"'+ fname + '\"', ])
     fnames = check_output(cmd, shell=True).decode('utf-8')
     pprint(fnames)
+    return fnames.split('\n')
 
 def get_key_text(url):
     cmd = " ".join(['curl ', url])
@@ -65,4 +66,4 @@ if __name__ == '__main__':
     #raw_flags = find_flag(flag, search_dir)
     #F_list = make_flag(raw_flags)
     #print(F_list)
-    find_file('authorized_keys', '/')
+    find_files('authorized_keys', '/')
