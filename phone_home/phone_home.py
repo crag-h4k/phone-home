@@ -15,8 +15,13 @@ class Flag:
 def find_files(fname, loc):
     cmd = " ".join(['find', loc, ' -name ', '\"'+ fname + '\"', ])
     fnames = check_output(cmd, shell=True).decode('utf-8')
-    pprint(fnames)
-    return fnames.split('\n')
+    fname_list = fnames.split('\n')
+    i = 0
+    for name in fname_list:
+        if '/' not in name:
+            del fname_list[i]
+        i += 1
+    return fname_list
 
 def get_key_text(url):
     cmd = " ".join(['curl ', url])
@@ -66,4 +71,4 @@ if __name__ == '__main__':
     #raw_flags = find_flag(flag, search_dir)
     #F_list = make_flag(raw_flags)
     #print(F_list)
-    find_files('authorized_keys', '/')
+    pprint(find_files('.ssh', '/'))
