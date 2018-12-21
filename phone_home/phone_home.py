@@ -1,7 +1,7 @@
 from subprocess import check_output
 from os import system
 from pprint import pprint
-
+from sys import argv
 #from paramiko import *
 
 
@@ -18,8 +18,8 @@ def find_files(fname, loc):
     fname_list = fnames.split('\n')
     i = 0
     for name in fname_list:
-        if '/' not in name:
-            del fname_list[i]
+        if '/' not in name: del fname_list[i]
+        else: continue
         i += 1
     return fname_list
 
@@ -71,4 +71,5 @@ if __name__ == '__main__':
     #raw_flags = find_flag(flag, search_dir)
     #F_list = make_flag(raw_flags)
     #print(F_list)
-    pprint(find_files('.ssh', '/'))
+    fname = argv[1]
+    pprint(find_files(fname, '/'))
