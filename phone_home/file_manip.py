@@ -3,7 +3,7 @@ from sys import argv
 from urllib.request import urlopen
 from pprint import pprint
 #from paramiko import *
-from Flag import Flag, find_flag, make_flags
+from Flag import Flag, find_flag, make_flags, get_line_nos
 
 def find_files(fname, loc):
     cmd = " ".join(['find', loc, ' -name ', '\"*'+ fname + '*\"', ])
@@ -44,18 +44,30 @@ def x_clear_tracks(flag, fname):
             else: f.write(line)
     return
 
-def clear_tracks(flag, fname):
-    flag.encode()
+def clear_tracks(Flag):
 
-    with open(fname, 'br+') as f:
+    line_no = Flag.line_no - 1
+    fname = Flag.fname
+    with open(fname, 'br') as f:
         lines = f.readlines()
-        f.seek()
-        for line in lines:
-            if flag in line: continue
-            else: f.write(line)
+        new_lines = lines 
+        print(lines[line_no])
+        del new_lines[line_no]
+        #pprint(new_lines)
+        #del new_lines[line_no + 1] 
+    with open(fname, 'bw') as f: 
+        f.seek(0)
+        for line in new_lines:
+            f.write(line)
+            #for line in lines:
+        #    if flag in line: continue
+        #    else: f.write(line)
     return
 
 if __name__ == '__main__':
     flag = argv[1]
     F_list = make_flags(find_flag(flag, '../tests'))
+    data = get_line_nos(F_list)
     [print(F.fname, F.line_no, F.line_text) for F in F_list]
+    #[clear_tracks(F)for F in F_list]
+
