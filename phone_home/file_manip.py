@@ -1,8 +1,9 @@
 from subprocess import check_output
-from sys import arg
+from sys import argv
 from urllib.request import urlopen
+from pprint import pprint
 #from paramiko import *
-
+from Flag import Flag, find_flag, make_flags
 
 def find_files(fname, loc):
     cmd = " ".join(['find', loc, ' -name ', '\"*'+ fname + '*\"', ])
@@ -32,18 +33,29 @@ def insert_text(text, fname, line_no = None):
                 f.write(line)
     return
 
+def x_clear_tracks(flag, fname):
+    flag.encode()
 
-def find_flag(flag, loc):
-    cmd = " ".join(["grep -iRn", flag, search_dir])
-    flags = check_output(cmd, shell=True).decode('utf-8')
-    return [flag] + flags.split('\n')
-
-def clear_tracks(flag, logs):
-    #auth, 
+    with open(fname, 'br+') as f:
+        lines = f.readlines()
+        f.seek()
+        for line in lines:
+            if flag in line: continue
+            else: f.write(line)
     return
 
+def clear_tracks(flag, fname):
+    flag.encode()
+
+    with open(fname, 'br+') as f:
+        lines = f.readlines()
+        f.seek()
+        for line in lines:
+            if flag in line: continue
+            else: f.write(line)
+    return
 
 if __name__ == '__main__':
-    url = argv[1]
-    fname = argv[2]
-    insert_text('poopypants', fname, line_no = 1)
+    flag = argv[1]
+    F_list = make_flags(find_flag(flag, '../tests'))
+    [print(F.fname, F.line_no, F.line_text) for F in F_list]
